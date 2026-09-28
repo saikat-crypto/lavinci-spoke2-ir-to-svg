@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Production build outputs
+dist/
+
+# Evaluation and sample outputs
+*.log
+*.zip
+*.dwg
+*.dxf
+*.svg
+*.pdf
+*_semantic_ir.json
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables
+.env
+.env.local

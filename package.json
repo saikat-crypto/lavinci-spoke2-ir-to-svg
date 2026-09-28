@@ -1,0 +1,40 @@
+{
+  "name": "@lavinci/v4-ir-to-svg",
+  "version": "4.0.0",
+  "description": "High-fidelity Vector CAD to SVG Compiler (v4) with 6 industry presets, ACI palette, and instanced scene graph",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test:svg": "tsx src/testSvgRunner.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "cad",
+    "svg",
+    "compiler",
+    "vector",
+    "autocad",
+    "aci",
+    "intermediate-representation",
+    "computational-geometry"
+  ],
+  "author": "Saikat Dutta Chowdhury",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
