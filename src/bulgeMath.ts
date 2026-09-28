@@ -125,8 +125,8 @@ export function circularArcToSvgPath(
 
   const largeArcFlag: 0 | 1 = sweepAngle > 180 ? 1 : 0;
 
-  // In screen space (Y flipped), CCW arc travels clockwise (sweepFlag = 1)
-  const sweepFlag: 0 | 1 = 1;
+  // In screen space (Y flipped), CCW arc travels with decreasing screen angle (sweepFlag = 0)
+  const sweepFlag: 0 | 1 = 0;
 
   return `M ${startX.toFixed(3)} ${screenStartY.toFixed(3)} A ${radius.toFixed(3)} ${radius.toFixed(3)} 0 ${largeArcFlag} ${sweepFlag} ${endX.toFixed(3)} ${screenEndY.toFixed(3)}`;
 }

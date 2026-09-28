@@ -457,7 +457,7 @@ export function compileCadIrToSvg(
         const t = ent.transform;
         const tx = t.tx.toFixed(3);
         const ty = framing.flipY(t.ty).toFixed(3);
-        const mStr = `matrix(${t.a.toFixed(4)}, ${(-t.b).toFixed(4)}, ${t.c.toFixed(4)}, ${(-t.d).toFixed(4)}, ${tx}, ${ty})`;
+        const mStr = `matrix(${t.a.toFixed(4)}, ${(-t.b).toFixed(4)}, ${(-t.c).toFixed(4)}, ${t.d.toFixed(4)}, ${tx}, ${ty})`;
         const dataTags = config.interactive
           ? ` data-handle="${ent.sourceHandle}" data-block="${ent.blockName}"`
           : '';
