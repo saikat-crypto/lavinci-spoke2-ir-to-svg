@@ -137,17 +137,18 @@ function calculateFraming(ir: SemanticCadIR, marginPercent: number): Framing {
 // Lineweight resolution
 // ─────────────────────────────────────────────────────────────────────────────
 
-function getStrokeWidth(ent: Entity, config: ResolvedSvgConfig): string {
+function getStrokeWidth(ent: Entity, config: ResolvedSvgConfig, framing?: Framing): string {
   if (config.useNonScalingStroke) {
     return '1';
   }
 
-  // True millimeter line weights for publication/print mode
+  const dim = framing ? Math.min(framing.width, framing.height) : 1000;
   const lw = ent.visual.lineWeight;
-  if (lw.kind === 'mm100') {
-    return `${(lw.value / 100).toFixed(2)}mm`;
-  }
-  return '0.25mm'; // Default ISO technical drawing line weight
+  const mmWeight = lw.kind === 'mm100' ? Math.max(lw.value / 100, 0.13) : 0.25;
+
+  // Proportional line weight scaled to drawing coordinate system
+  const strokeUnits = Math.max((dim / 600) * (mmWeight / 0.25), 0.001);
+  return strokeUnits.toFixed(3);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -167,7 +168,7 @@ function renderLine(
   const y2 = framing.flipY(line.end.y).toFixed(3);
 
   const color = resolveColorToHex(ent.visual.color, layerEntry?.color, config.theme);
-  const strokeWidth = getStrokeWidth(ent, config);
+  const strokeWidth = getStrokeWidth(ent, config, framing);
   const nonScaling = config.useNonScalingStroke ? ' vector-effect="non-scaling-stroke"' : '';
   const dataTags = config.interactive
     ? ` data-handle="${ent.sourceHandle}" data-id="${ent.id}"`
@@ -188,7 +189,7 @@ function renderCircle(
   const r = circle.radius.toFixed(3);
 
   const color = resolveColorToHex(ent.visual.color, layerEntry?.color, config.theme);
-  const strokeWidth = getStrokeWidth(ent, config);
+  const strokeWidth = getStrokeWidth(ent, config, framing);
   const nonScaling = config.useNonScalingStroke ? ' vector-effect="non-scaling-stroke"' : '';
   const dataTags = config.interactive
     ? ` data-handle="${ent.sourceHandle}" data-id="${ent.id}"`
@@ -214,7 +215,7 @@ function renderArc(
   );
 
   const color = resolveColorToHex(ent.visual.color, layerEntry?.color, config.theme);
-  const strokeWidth = getStrokeWidth(ent, config);
+  const strokeWidth = getStrokeWidth(ent, config, framing);
   const nonScaling = config.useNonScalingStroke ? ' vector-effect="non-scaling-stroke"' : '';
   const dataTags = config.interactive
     ? ` data-handle="${ent.sourceHandle}" data-id="${ent.id}"`
@@ -266,7 +267,7 @@ function renderPolyline(
   }
 
   const color = resolveColorToHex(ent.visual.color, layerEntry?.color, config.theme);
-  const strokeWidth = getStrokeWidth(ent, config);
+  const strokeWidth = getStrokeWidth(ent, config, framing);
   const nonScaling = config.useNonScalingStroke ? ' vector-effect="non-scaling-stroke"' : '';
   const dataTags = config.interactive
     ? ` data-handle="${ent.sourceHandle}" data-id="${ent.id}"`
